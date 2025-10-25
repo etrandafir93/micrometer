@@ -19,7 +19,9 @@ import io.micrometer.common.KeyValues;
 import io.micrometer.core.instrument.*;
 import org.assertj.core.api.AbstractAssert;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -371,4 +373,23 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
         return stringBuilder.toString();
     }
 
+    public MeterAssert meter(String meterName, Tag... tags) {
+        return this.meter(meterName, Arrays.asList(tags));
+    }
+
+    public MeterAssert meter(String meterName, Iterable<Tag> tags) {
+        hasMeterWithName(meterName);
+        Meter meter = actual.find(meterName)
+            .tags(tags)
+            .meter();
+        return MeterAssert.assertThat(Objects.requireNonNull(meter));
+    }
+
+    public MeterAssert.CounterAssert counter(String name, Tag... tags) {
+        return meter(name, tags).counter();
+    }
+
+    public MeterAssert.TimerAssert timer(String name, Tag... tags) {
+        return meter(name, tags).timer();
+    }
 }
