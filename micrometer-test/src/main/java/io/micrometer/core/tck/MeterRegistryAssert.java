@@ -45,7 +45,6 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
 
     /**
      * Creates the assert object for {@link MeterRegistry}.
-     *
      * @param actual meter registry to assert against
      * @return meter registry assertions
      */
@@ -55,7 +54,6 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
 
     /**
      * Creates the assert object for {@link MeterRegistry}.
-     *
      * @param actual meter registry to assert against
      * @return meter registry assertions
      */
@@ -65,7 +63,6 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
 
     /**
      * Verifies that there are no metrics in the registry.
-     *
      * @return this
      * @throws AssertionError if there are any metrics registered
      */
@@ -73,18 +70,17 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
         isNotNull();
         List<String> metricsNames = actual.getMeters()
             .stream()
-            .map(meter -> meter.getId()
-                .getName())
+            .map(meter -> meter.getId().getName())
             .collect(Collectors.toList());
         if (!metricsNames.isEmpty()) {
-            failWithMessage("Expected no metrics, but got metrics with following names <%s>", String.join(",", metricsNames));
+            failWithMessage("Expected no metrics, but got metrics with following names <%s>",
+                    String.join(",", metricsNames));
         }
         return this;
     }
 
     /**
      * Verifies that a meter with given name exists in the provided {@link MeterRegistry}.
-     *
      * @param meterName name of the meter
      * @return this
      * @throws AssertionError if the actual value is {@code null}.
@@ -92,17 +88,16 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
      */
     public MeterRegistryAssert hasMeterWithName(String meterName) {
         isNotNull();
-        Meter foundMeter = actual.find(meterName)
-            .meter();
+        Meter foundMeter = actual.find(meterName).meter();
         if (foundMeter == null) {
-            failWithMessage("Expected a meter with name <%s> but found none.\nFound following metrics %s", meterName, allMetrics());
+            failWithMessage("Expected a meter with name <%s> but found none.\nFound following metrics %s", meterName,
+                    allMetrics());
         }
         return this;
     }
 
     /**
      * Verifies that a timer with given name exists in the provided {@link MeterRegistry}.
-     *
      * @param timerName name of the timer
      * @return this
      * @throws AssertionError if the actual value is {@code null}.
@@ -110,10 +105,10 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
      */
     public MeterRegistryAssert hasTimerWithName(String timerName) {
         isNotNull();
-        Timer foundTimer = actual.find(timerName)
-            .timer();
+        Timer foundTimer = actual.find(timerName).timer();
         if (foundTimer == null) {
-            failWithMessage("Expected a timer with name <%s> but found none.\nFound following metrics %s", timerName, allMetrics());
+            failWithMessage("Expected a timer with name <%s> but found none.\nFound following metrics %s", timerName,
+                    allMetrics());
         }
         return this;
     }
@@ -121,18 +116,16 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a meter with given name does not exist in the provided
      * {@link MeterRegistry}.
-     *
      * @param meterName name of the meter that should not be present
      * @return this
      * @throws AssertionError if there is a meter registered under given name.
      */
     public MeterRegistryAssert doesNotHaveMeterWithName(String meterName) {
         isNotNull();
-        Meter foundMeter = actual.find(meterName)
-            .meter();
+        Meter foundMeter = actual.find(meterName).meter();
         if (foundMeter != null) {
-            failWithMessage("Expected no meter with name <%s> but found one with tags <%s>", meterName, foundMeter.getId()
-                .getTags());
+            failWithMessage("Expected no meter with name <%s> but found one with tags <%s>", meterName,
+                    foundMeter.getId().getTags());
         }
         return this;
     }
@@ -140,18 +133,16 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a timer with given name does not exist in the provided
      * {@link MeterRegistry}.
-     *
      * @param timerName name of the timer that should not be present
      * @return this
      * @throws AssertionError if there is a timer registered under given name.
      */
     public MeterRegistryAssert doesNotHaveTimerWithName(String timerName) {
         isNotNull();
-        Timer foundTimer = actual.find(timerName)
-            .timer();
+        Timer foundTimer = actual.find(timerName).timer();
         if (foundTimer != null) {
-            failWithMessage("Expected no timer with name <%s> but found one with tags <%s>", timerName, foundTimer.getId()
-                .getTags());
+            failWithMessage("Expected no timer with name <%s> but found one with tags <%s>", timerName,
+                    foundTimer.getId().getTags());
         }
         return this;
     }
@@ -159,21 +150,19 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a meter with given name and key-value tags exists in the provided
      * {@link MeterRegistry}.
-     *
      * @param meterName name of the meter
-     * @param tags      key-value pairs of tags
+     * @param tags key-value pairs of tags
      * @return this
      * @throws AssertionError if the actual value is {@code null}.
      * @throws AssertionError if there is no meter registered under given name with given
-     *                        tags.
+     * tags.
      */
     public MeterRegistryAssert hasMeterWithNameAndTags(String meterName, Tags tags) {
         isNotNull();
-        Meter foundMeter = actual.find(meterName)
-            .tags(tags)
-            .meter();
+        Meter foundMeter = actual.find(meterName).tags(tags).meter();
         if (foundMeter == null) {
-            failWithMessage("Expected a meter with name <%s> and tags <%s> but found none.\nFound following metrics %s", meterName, tags, allMetrics());
+            failWithMessage("Expected a meter with name <%s> and tags <%s> but found none.\nFound following metrics %s",
+                    meterName, tags, allMetrics());
         }
         return this;
     }
@@ -181,21 +170,19 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a timer with given name and key-value tags exists in the provided
      * {@link MeterRegistry}.
-     *
      * @param timerName name of the timer
-     * @param tags      key-value pairs of tags
+     * @param tags key-value pairs of tags
      * @return this
      * @throws AssertionError if the actual value is {@code null}.
      * @throws AssertionError if there is no timer registered under given name with given
-     *                        tags.
+     * tags.
      */
     public MeterRegistryAssert hasTimerWithNameAndTags(String timerName, Tags tags) {
         isNotNull();
-        Timer foundTimer = actual.find(timerName)
-            .tags(tags)
-            .timer();
+        Timer foundTimer = actual.find(timerName).tags(tags).timer();
         if (foundTimer == null) {
-            failWithMessage("Expected a timer with name <%s> and tags <%s> but found none.\nFound following metrics %s", timerName, tags, allMetrics());
+            failWithMessage("Expected a timer with name <%s> and tags <%s> but found none.\nFound following metrics %s",
+                    timerName, tags, allMetrics());
         }
         return this;
     }
@@ -203,13 +190,12 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a meter with given name and key-value tags exists in the provided
      * {@link MeterRegistry}.
-     *
      * @param meterName name of the meter
-     * @param tags      key-value pairs of tags
+     * @param tags key-value pairs of tags
      * @return this
      * @throws AssertionError if the actual value is {@code null}.
      * @throws AssertionError if there is no meter registered under given name with given
-     *                        tags.
+     * tags.
      */
     public MeterRegistryAssert hasMeterWithNameAndTags(String meterName, KeyValues tags) {
         return hasMeterWithNameAndTags(meterName, toMicrometerTags(tags));
@@ -218,40 +204,34 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a timer with given name and key-value tags exists in the provided
      * {@link MeterRegistry}.
-     *
      * @param timerName name of the timer
-     * @param tags      key-value pairs of tags
+     * @param tags key-value pairs of tags
      * @return this
      * @throws AssertionError if the actual value is {@code null}.
      * @throws AssertionError if there is no timer registered under given name with given
-     *                        tags.
+     * tags.
      */
     public MeterRegistryAssert hasTimerWithNameAndTags(String timerName, KeyValues tags) {
         return hasTimerWithNameAndTags(timerName, toMicrometerTags(tags));
     }
 
     private Tags toMicrometerTags(KeyValues tags) {
-        Tag[] array = tags.stream()
-            .map(tag -> Tag.of(tag.getKey(), tag.getValue()))
-            .toArray(Tag[]::new);
+        Tag[] array = tags.stream().map(tag -> Tag.of(tag.getKey(), tag.getValue())).toArray(Tag[]::new);
         return Tags.of(array);
     }
 
     /**
      * Verifies that a meter with given name and key-value tags does not exist in the
      * provided {@link MeterRegistry}.
-     *
      * @param meterName name of the meter
-     * @param tags      key-value pairs of tags
+     * @param tags key-value pairs of tags
      * @return this
      * @throws AssertionError if there is a meter registered under given name with given
-     *                        tags.
+     * tags.
      */
     public MeterRegistryAssert doesNotHaveMeterWithNameAndTags(String meterName, Tags tags) {
         isNotNull();
-        Meter foundMeter = actual.find(meterName)
-            .tags(tags)
-            .meter();
+        Meter foundMeter = actual.find(meterName).tags(tags).meter();
         if (foundMeter != null) {
             failWithMessage("Expected no meter with name <%s> and tags <%s> but found one", meterName, tags);
         }
@@ -261,18 +241,15 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a timer with given name and key-value tags does not exist in the
      * provided {@link MeterRegistry}.
-     *
      * @param timerName name of the timer
-     * @param tags      key-value pairs of tags
+     * @param tags key-value pairs of tags
      * @return this
      * @throws AssertionError if there is a timer registered under given name with given
-     *                        tags.
+     * tags.
      */
     public MeterRegistryAssert doesNotHaveTimerWithNameAndTags(String timerName, Tags tags) {
         isNotNull();
-        Timer foundTimer = actual.find(timerName)
-            .tags(tags)
-            .timer();
+        Timer foundTimer = actual.find(timerName).tags(tags).timer();
         if (foundTimer != null) {
             failWithMessage("Expected no timer with name <%s> and tags <%s> but found one", timerName, tags);
         }
@@ -282,12 +259,11 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a meter with given name and key-value tags does not exist in the
      * provided {@link MeterRegistry}.
-     *
      * @param meterName name of the meter
-     * @param tags      key-value pairs of tags
+     * @param tags key-value pairs of tags
      * @return this
      * @throws AssertionError if there is a meter registered under given name with given
-     *                        tags.
+     * tags.
      */
     public MeterRegistryAssert doesNotHaveMeterWithNameAndTags(String meterName, KeyValues tags) {
         return doesNotHaveMeterWithNameAndTags(meterName, toMicrometerTags(tags));
@@ -296,12 +272,11 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a timer with given name and key-value tags does not exist in the
      * provided {@link MeterRegistry}.
-     *
      * @param timerName name of the timer
-     * @param tags      key-value pairs of tags
+     * @param tags key-value pairs of tags
      * @return this
      * @throws AssertionError if there is a timer registered under given name with given
-     *                        tags.
+     * tags.
      */
     public MeterRegistryAssert doesNotHaveTimerWithNameAndTags(String timerName, KeyValues tags) {
         return doesNotHaveTimerWithNameAndTags(timerName, toMicrometerTags(tags));
@@ -310,22 +285,20 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a meter with given name and tag keys exists in the provided
      * {@link MeterRegistry}.
-     *
      * @param meterName name of the meter
-     * @param tagKeys   tag keys
+     * @param tagKeys tag keys
      * @return this
      * @throws AssertionError if the actual value is {@code null}.
      * @throws AssertionError if there is no meter registered under given name with given
-     *                        tag keys.
+     * tag keys.
      */
     public MeterRegistryAssert hasMeterWithNameAndTagKeys(String meterName, String... tagKeys) {
         isNotNull();
-        Meter foundMeter = actual.find(meterName)
-            .tagKeys(tagKeys)
-            .meter();
+        Meter foundMeter = actual.find(meterName).tagKeys(tagKeys).meter();
         if (foundMeter == null) {
-            failWithMessage("Expected a meter with name <%s> and tag keys <%s> but found none.\nFound following metrics %s", meterName,
-                String.join(",", tagKeys), allMetrics());
+            failWithMessage(
+                    "Expected a meter with name <%s> and tag keys <%s> but found none.\nFound following metrics %s",
+                    meterName, String.join(",", tagKeys), allMetrics());
         }
         return this;
     }
@@ -333,22 +306,20 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a timer with given name and tag keys exists in the provided
      * {@link MeterRegistry}.
-     *
      * @param timerName name of the timer
-     * @param tagKeys   tag keys
+     * @param tagKeys tag keys
      * @return this
      * @throws AssertionError if the actual value is {@code null}.
      * @throws AssertionError if there is no timer registered under given name with given
-     *                        tag keys.
+     * tag keys.
      */
     public MeterRegistryAssert hasTimerWithNameAndTagKeys(String timerName, String... tagKeys) {
         isNotNull();
-        Timer foundTimer = actual.find(timerName)
-            .tagKeys(tagKeys)
-            .timer();
+        Timer foundTimer = actual.find(timerName).tagKeys(tagKeys).timer();
         if (foundTimer == null) {
-            failWithMessage("Expected a timer with name <%s> and tag keys <%s> but found none.\nFound following metrics %s", timerName,
-                String.join(",", tagKeys), allMetrics());
+            failWithMessage(
+                    "Expected a timer with name <%s> and tag keys <%s> but found none.\nFound following metrics %s",
+                    timerName, String.join(",", tagKeys), allMetrics());
         }
         return this;
     }
@@ -356,20 +327,18 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a meter with given name and tag keys does not exist in the provided
      * {@link MeterRegistry}.
-     *
      * @param meterName name of the meter
-     * @param tagKeys   tag keys
+     * @param tagKeys tag keys
      * @return this
      * @throws AssertionError if there is a meter registered under given name with given
-     *                        tag keys.
+     * tag keys.
      */
     public MeterRegistryAssert doesNotHaveMeterWithNameAndTagKeys(String meterName, String... tagKeys) {
         isNotNull();
-        Meter foundMeter = actual.find(meterName)
-            .tagKeys(tagKeys)
-            .meter();
+        Meter foundMeter = actual.find(meterName).tagKeys(tagKeys).meter();
         if (foundMeter != null) {
-            failWithMessage("Expected no meter with name <%s> and tag keys <%s> but found one", meterName, String.join(",", tagKeys));
+            failWithMessage("Expected no meter with name <%s> and tag keys <%s> but found one", meterName,
+                    String.join(",", tagKeys));
         }
         return this;
     }
@@ -377,20 +346,18 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     /**
      * Verifies that a timer with given name and tag keys does not exist in the provided
      * {@link MeterRegistry}.
-     *
      * @param timerName name of the timer
-     * @param tagKeys   tag keys
+     * @param tagKeys tag keys
      * @return this
      * @throws AssertionError if there is a timer registered under given name with given
-     *                        tag keys.
+     * tag keys.
      */
     public MeterRegistryAssert doesNotHaveTimerWithNameAndTagKeys(String timerName, String... tagKeys) {
         isNotNull();
-        Timer foundTimer = actual.find(timerName)
-            .tagKeys(tagKeys)
-            .timer();
+        Timer foundTimer = actual.find(timerName).tagKeys(tagKeys).timer();
         if (foundTimer != null) {
-            failWithMessage("Expected no timer with name <%s> and tag keys <%s> but found one", timerName, String.join(",", tagKeys));
+            failWithMessage("Expected no timer with name <%s> and tag keys <%s> but found one", timerName,
+                    String.join(",", tagKeys));
         }
         return this;
     }
@@ -398,23 +365,20 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     private String allMetrics() {
         StringBuilder stringBuilder = new StringBuilder();
         actual.forEachMeter(meter -> stringBuilder.append("\n\tMeter with name <")
-            .append(meter.getId()
-                .getName())
+            .append(meter.getId().getName())
             .append(">")
             .append(" and type <")
-            .append(meter.getId()
-                .getType())
+            .append(meter.getId().getType())
             .append(">")
             .append(" \n\t\thas the following tags <")
-            .append(meter.getId()
-                .getTags())
+            .append(meter.getId().getTags())
             .append(">\n"));
         return stringBuilder.toString();
     }
 
     /**
-     * Finds a meter by name and tags and returns a {@link MeterAssert} for further assertions.
-     *
+     * Finds a meter by name and tags and returns a {@link MeterAssert} for further
+     * assertions.
      * @param meterName name of the meter
      * @param tags tags to match
      * @return a {@link MeterAssert} for the found meter
@@ -425,8 +389,8 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     }
 
     /**
-     * Finds a meter by name and tags and returns a {@link MeterAssert} for further assertions.
-     *
+     * Finds a meter by name and tags and returns a {@link MeterAssert} for further
+     * assertions.
      * @param meterName name of the meter
      * @param tags tags to match
      * @return a {@link MeterAssert} for the found meter
@@ -434,20 +398,16 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
      */
     public MeterAssert<?> meter(String meterName, Iterable<Tag> tags) {
         hasMeterWithName(meterName);
-        Meter meter = actual.find(meterName)
-            .tags(tags)
-            .meter();
+        Meter meter = actual.find(meterName).tags(tags).meter();
 
-        return MeterAssert.assertThat(meter)
-            .as("Meter with name <%s> and tags <%s>", meterName, tags)
-            .isNotNull();
+        return MeterAssert.assertThat(meter).as("Meter with name <%s> and tags <%s>", meterName, tags).isNotNull();
     }
 
     /**
-     * Finds a counter by name and tags and returns a {@link CounterAssert} for further assertions.
+     * Finds a counter by name and tags and returns a {@link CounterAssert} for further
+     * assertions.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Counter.builder("my.counter")
      *     .tag("env", "prod")
      *     .register(registry);
@@ -456,7 +416,6 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
      *     .counter("my.counter", Tag.of("env", "prod"))
      *     .hasCount(0);
      * </code></pre>
-     *
      * @param name name of the counter
      * @param tags tags to match
      * @return a {@link CounterAssert} for the found counter
@@ -472,10 +431,10 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     }
 
     /**
-     * Finds a timer by name and tags and returns a {@link TimerAssert} for further assertions.
+     * Finds a timer by name and tags and returns a {@link TimerAssert} for further
+     * assertions.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Timer.builder("my.timer")
      *     .tag("env", "prod")
      *     .register(registry);
@@ -486,7 +445,6 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
      *     .totalTime()
      *     .isEqualTo(Duration.ZERO);
      * </code></pre>
-     *
      * @param name name of the timer
      * @param tags tags to match
      * @return a {@link TimerAssert} for the found timer
@@ -502,10 +460,10 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
     }
 
     /**
-     * Finds a gauge by name and tags and returns a {@link GaugeAssert} for further assertions.
+     * Finds a gauge by name and tags and returns a {@link GaugeAssert} for further
+     * assertions.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Gauge.builder("my.gauge", () -> 42.0)
      *     .tag("env", "prod")
      *     .register(registry);
@@ -514,7 +472,6 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
      *     .gauge("my.gauge", Tag.of("env", "prod"))
      *     .hasValue(42.0);
      * </code></pre>
-     *
      * @param name name of the gauge
      * @param tags tags to match
      * @return a {@link GaugeAssert} for the found gauge
@@ -528,4 +485,5 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
             .as("Gauge with name <%s> and tags <%s>", name, tags)
             .isNotNull();
     }
+
 }

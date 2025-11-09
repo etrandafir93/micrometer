@@ -36,8 +36,7 @@ public class CounterAssert extends AbstractAssert<CounterAssert, Counter> {
     /**
      * Verifies that the counter's count is equal to the expected count.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Counter counter = Counter.builder("my.counter").register(registry);
      * counter.increment();
      * counter.increment();
@@ -56,8 +55,7 @@ public class CounterAssert extends AbstractAssert<CounterAssert, Counter> {
     /**
      * Returns AssertJ's {@link IntegerAssert} for the counter's current count.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Counter counter = Counter.builder("my.counter").register(registry);
      * counter.increment(5);
      *
@@ -71,4 +69,5 @@ public class CounterAssert extends AbstractAssert<CounterAssert, Counter> {
     public IntegerAssert count() {
         return new IntegerAssert((int) actual.count());
     }
+
 }

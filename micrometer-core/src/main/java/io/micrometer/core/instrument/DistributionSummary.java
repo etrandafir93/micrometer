@@ -106,10 +106,8 @@ public interface DistributionSummary extends Meter, HistogramSupport {
 
     @Override
     default Iterable<Measurement> measure() {
-        return Arrays.asList(
-            new Measurement(() -> (double) count(), Statistic.COUNT),
-            new Measurement(this::totalAmount, Statistic.TOTAL)
-        );
+        return Arrays.asList(new Measurement(() -> (double) count(), Statistic.COUNT),
+                new Measurement(this::totalAmount, Statistic.TOTAL));
     }
 
     /**

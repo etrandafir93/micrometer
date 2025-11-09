@@ -18,44 +18,28 @@ class TimerAssertTest {
 
     @Test
     void shouldFindTimerByName() {
-        Timer.builder("foo")
-            .register(simpleMeterRegistry)
-            .record(ofSeconds(1));
+        Timer.builder("foo").register(simpleMeterRegistry).record(ofSeconds(1));
 
-        meterRegistryAssert.timer("foo")
-            .hasCount(1)
-            .totalTime()
-            .isEqualTo(ofSeconds(1));
+        meterRegistryAssert.timer("foo").hasCount(1).totalTime().isEqualTo(ofSeconds(1));
     }
 
     @Test
     void shouldThrowIfTimerNotFound() {
-        Timer.builder("foo")
-            .register(simpleMeterRegistry)
-            .record(ofSeconds(1));
+        Timer.builder("foo").register(simpleMeterRegistry).record(ofSeconds(1));
 
-        assertThatThrownBy(() -> meterRegistryAssert.timer("foo", Tag.of("other-tag", "xxx"))).isInstanceOf(AssertionError.class)
+        assertThatThrownBy(() -> meterRegistryAssert.timer("foo", Tag.of("other-tag", "xxx")))
+            .isInstanceOf(AssertionError.class)
             .hasStackTraceContaining("Meter with name <foo> and tags <[tag(other-tag=xxx)]>")
             .hasMessageContaining("Expecting actual not to be null");
     }
 
     @Test
     void shouldFindTimerByNameAndTags() {
-        Timer.builder("foo")
-            .tag("tag-1", "aa")
-            .register(simpleMeterRegistry)
-            .record(ofSeconds(1));
+        Timer.builder("foo").tag("tag-1", "aa").register(simpleMeterRegistry).record(ofSeconds(1));
 
-        Timer.builder("foo")
-            .tag("tag-1", "bb")
-            .tag("tag-2", "cc")
-            .register(simpleMeterRegistry)
-            .record(ofSeconds(5));
+        Timer.builder("foo").tag("tag-1", "bb").tag("tag-2", "cc").register(simpleMeterRegistry).record(ofSeconds(5));
 
-        meterRegistryAssert.timer("foo", Tag.of("tag-1", "aa"))
-            .hasCount(1)
-            .totalTime()
-            .isEqualTo(ofSeconds(1));
+        meterRegistryAssert.timer("foo", Tag.of("tag-1", "aa")).hasCount(1).totalTime().isEqualTo(ofSeconds(1));
 
         meterRegistryAssert.timer("foo", Tag.of("tag-1", "bb"), Tag.of("tag-2", "cc"))
             .hasCount(1)
@@ -65,9 +49,7 @@ class TimerAssertTest {
 
     @Test
     void shouldLeverageDurationAsserts() {
-        Timer.builder("foo")
-            .register(simpleMeterRegistry)
-            .record(ofSeconds(10));
+        Timer.builder("foo").register(simpleMeterRegistry).record(ofSeconds(10));
 
         meterRegistryAssert.timer("foo")
             .totalTime()
@@ -77,56 +59,46 @@ class TimerAssertTest {
 
     @Test
     void shouldAssertOnMax() {
-        Timer timer = Timer.builder("foo")
-            .register(simpleMeterRegistry);
+        Timer timer = Timer.builder("foo").register(simpleMeterRegistry);
 
         timer.record(ofSeconds(1));
         timer.record(ofSeconds(2));
         timer.record(ofSeconds(3));
 
-        meterRegistryAssert.timer("foo")
-            .max()
-            .isEqualTo(ofSeconds(3));
+        meterRegistryAssert.timer("foo").max().isEqualTo(ofSeconds(3));
     }
 
     @Test
     void shouldAssertOnMean() {
-        Timer timer = Timer.builder("foo")
-            .register(simpleMeterRegistry);
+        Timer timer = Timer.builder("foo").register(simpleMeterRegistry);
 
         timer.record(ofSeconds(1));
         timer.record(ofSeconds(2));
         timer.record(ofSeconds(3));
 
-        meterRegistryAssert.timer("foo")
-            .mean()
-            .isEqualTo(ofSeconds(2));
+        meterRegistryAssert.timer("foo").mean().isEqualTo(ofSeconds(2));
     }
 
     @Test
     void shouldAssertOnTotalTime() {
-        Timer timer = Timer.builder("foo")
-            .register(simpleMeterRegistry);
+        Timer timer = Timer.builder("foo").register(simpleMeterRegistry);
 
         timer.record(ofSeconds(1));
         timer.record(ofSeconds(2));
         timer.record(ofSeconds(3));
 
-        meterRegistryAssert.timer("foo")
-            .totalTime()
-            .isEqualTo(ofSeconds(6));
+        meterRegistryAssert.timer("foo").totalTime().isEqualTo(ofSeconds(6));
     }
 
     @Test
     void shouldAssertOnMin() {
-        Timer timer = Timer.builder("foo")
-            .register(simpleMeterRegistry);
+        Timer timer = Timer.builder("foo").register(simpleMeterRegistry);
 
         timer.record(ofSeconds(1));
         timer.record(ofSeconds(2));
         timer.record(ofSeconds(3));
 
-        meterRegistryAssert.timer("foo")
-            .hasCount(3);
+        meterRegistryAssert.timer("foo").hasCount(3);
     }
+
 }

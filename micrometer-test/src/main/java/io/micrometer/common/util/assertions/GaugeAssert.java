@@ -8,9 +8,8 @@ import org.assertj.core.api.DoubleAssert;
 /**
  * Assertion methods for {@link Gauge}s.
  * <p>
- * To create a new instance of this class, invoke
- * {@link GaugeAssert#assertThat(Gauge)} or use
- * {@link io.micrometer.core.tck.MeterRegistryAssert#gauge(String, Tag...)}.
+ * To create a new instance of this class, invoke {@link GaugeAssert#assertThat(Gauge)} or
+ * use {@link io.micrometer.core.tck.MeterRegistryAssert#gauge(String, Tag...)}.
  *
  * @author Emanuel Trandafir
  */
@@ -36,8 +35,7 @@ public class GaugeAssert extends AbstractAssert<GaugeAssert, Gauge> {
     /**
      * Verifies that the gauge's value is equal to the expected value.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Gauge gauge = Gauge.builder("my.gauge", () -> 42.0).register(registry);
      *
      * assertThat(gauge).hasValue(42.0);
@@ -54,8 +52,7 @@ public class GaugeAssert extends AbstractAssert<GaugeAssert, Gauge> {
     /**
      * Returns AssertJ's {@link DoubleAssert} for the gauge's current value.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Gauge gauge = Gauge.builder("my.gauge", () -> 42.5).register(registry);
      *
      * assertThat(gauge).value()
@@ -68,4 +65,5 @@ public class GaugeAssert extends AbstractAssert<GaugeAssert, Gauge> {
     public DoubleAssert value() {
         return new DoubleAssert(actual.value());
     }
+
 }

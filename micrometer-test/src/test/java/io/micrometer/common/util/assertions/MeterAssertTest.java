@@ -15,8 +15,7 @@ class MeterAssertTest {
 
     @Test
     void shouldAssertOnMeasures() {
-        DistributionSummary meter = DistributionSummary.builder("foo")
-            .register(simpleMeterRegistry);
+        DistributionSummary meter = DistributionSummary.builder("foo").register(simpleMeterRegistry);
 
         meter.record(10.0);
         meter.record(20.0);
@@ -29,12 +28,9 @@ class MeterAssertTest {
 
     @Test
     void shouldAssertOnType() {
-        DistributionSummary.builder("foo")
-            .register(simpleMeterRegistry)
-            .record(100.0);
+        DistributionSummary.builder("foo").register(simpleMeterRegistry).record(100.0);
 
-        meterRegistryAssert.meter("foo")
-            .hasType(Meter.Type.DISTRIBUTION_SUMMARY);
+        meterRegistryAssert.meter("foo").hasType(Meter.Type.DISTRIBUTION_SUMMARY);
     }
 
 }

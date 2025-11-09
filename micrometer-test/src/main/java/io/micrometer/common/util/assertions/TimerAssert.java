@@ -15,9 +15,8 @@ import io.micrometer.core.instrument.Timer;
 /**
  * Assertion methods for {@link Timer}s.
  * <p>
- * To create a new instance of this class, invoke
- * {@link TimerAssert#assertThat(Timer)} or use
- * {@link io.micrometer.core.tck.MeterRegistryAssert#timer(String, Tag...)}.
+ * To create a new instance of this class, invoke {@link TimerAssert#assertThat(Timer)} or
+ * use {@link io.micrometer.core.tck.MeterRegistryAssert#timer(String, Tag...)}.
  *
  * @author Emanuel Trandafir
  */
@@ -37,10 +36,10 @@ public class TimerAssert extends AbstractAssert<TimerAssert, Timer> {
     }
 
     /**
-     * Returns AssertJ's {@link org.assertj.core.api.DurationAssert} for the total time recorded by this timer.
+     * Returns AssertJ's {@link org.assertj.core.api.DurationAssert} for the total time
+     * recorded by this timer.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Timer timer = Timer.builder("my.timer").register(registry);
      * timer.record(Duration.ofSeconds(5));
      * timer.record(Duration.ofSeconds(3));
@@ -61,8 +60,7 @@ public class TimerAssert extends AbstractAssert<TimerAssert, Timer> {
     /**
      * Returns AssertJ's {@link DurationAssert} for the maximum recorded duration.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Timer timer = Timer.builder("my.timer").register(registry);
      * timer.record(Duration.ofSeconds(1));
      * timer.record(Duration.ofSeconds(5));
@@ -83,8 +81,7 @@ public class TimerAssert extends AbstractAssert<TimerAssert, Timer> {
     /**
      * Returns AssertJ's {@link DurationAssert} for the mean (average) duration.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Timer timer = Timer.builder("my.timer").register(registry);
      * timer.record(Duration.ofSeconds(1));
      * timer.record(Duration.ofSeconds(2));
@@ -104,8 +101,7 @@ public class TimerAssert extends AbstractAssert<TimerAssert, Timer> {
     /**
      * Verifies that the timer's count is equal to the expected count.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Timer timer = Timer.builder("my.timer").register(registry);
      * timer.record(Duration.ofSeconds(1));
      * timer.record(Duration.ofSeconds(2));
@@ -122,10 +118,10 @@ public class TimerAssert extends AbstractAssert<TimerAssert, Timer> {
     }
 
     /**
-     * Returns AssertJ's {@link IntegerAssert} for the number of times the timer has been recorded.
+     * Returns AssertJ's {@link IntegerAssert} for the number of times the timer has been
+     * recorded.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * Timer timer = Timer.builder("my.timer").register(registry);
      * timer.record(Duration.ofSeconds(1));
      * timer.record(Duration.ofSeconds(2));
@@ -138,11 +134,12 @@ public class TimerAssert extends AbstractAssert<TimerAssert, Timer> {
      * @see #hasCount(int)
      */
     public IntegerAssert count() {
-        return new IntegerAssert((int)actual.count());
+        return new IntegerAssert((int) actual.count());
     }
 
     private static DurationAssert toDurationAssert(Function<TimeUnit, Double> accessor) {
         double nanos = accessor.apply(TimeUnit.NANOSECONDS);
         return new DurationAssert(Duration.ofNanos((long) nanos));
     }
+
 }

@@ -13,14 +13,13 @@ import java.util.stream.StreamSupport;
 /**
  * Assertion methods for {@link Meter}s.
  * <p>
- * This class can be used for all meter types that don't have a dedicated assertion implementation.
- * For specific meter types like <em>Counters</em>, <em>Timers</em>, or <em>Gauges</em>,
- * prefer using the dedicated assertion classes:
- * {@link CounterAssert}, {@link TimerAssert}, or {@link GaugeAssert}.
+ * This class can be used for all meter types that don't have a dedicated assertion
+ * implementation. For specific meter types like <em>Counters</em>, <em>Timers</em>, or
+ * <em>Gauges</em>, prefer using the dedicated assertion classes: {@link CounterAssert},
+ * {@link TimerAssert}, or {@link GaugeAssert}.
  * <p>
- * To create a new instance of this class, invoke
- * {@link MeterAssert#assertThat(Meter)} or use
- * {@link io.micrometer.core.tck.MeterRegistryAssert#meter(String, Tag...)}.
+ * To create a new instance of this class, invoke {@link MeterAssert#assertThat(Meter)} or
+ * use {@link io.micrometer.core.tck.MeterRegistryAssert#meter(String, Tag...)}.
  *
  * @author Emanuel Trandafir
  * @see CounterAssert
@@ -31,9 +30,8 @@ public class MeterAssert<METER extends Meter> extends AbstractAssert<MeterAssert
 
     /**
      * Creates a new instance of {@link MeterAssert}.
-     *
      * @param actual the meter to assert on
-     * @param type   the class type for the assertion
+     * @param type the class type for the assertion
      */
     protected MeterAssert(METER actual, Class<? extends MeterAssert> type) {
         super(actual, type);
@@ -41,9 +39,8 @@ public class MeterAssert<METER extends Meter> extends AbstractAssert<MeterAssert
 
     /**
      * Creates a new instance of {@link MeterAssert}.
-     *
      * @param actual the meter to assert on
-     * @param <M>    the meter type
+     * @param <M> the meter type
      * @return the created assertion object
      */
     public static <M extends Meter> MeterAssert<M> assertThat(M actual) {
@@ -51,10 +48,10 @@ public class MeterAssert<METER extends Meter> extends AbstractAssert<MeterAssert
     }
 
     /**
-     * Verifies that the meter has a measurement with the given statistic and expected value.
+     * Verifies that the meter has a measurement with the given statistic and expected
+     * value.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * DistributionSummary summary = DistributionSummary.builder("response.size")
      *     .register(registry);
      * summary.record(100.0);
@@ -71,8 +68,7 @@ public class MeterAssert<METER extends Meter> extends AbstractAssert<MeterAssert
      * @see #hasType(Meter.Type)
      */
     public MeterAssert<METER> hasMeasurement(Statistic statistic, double expectedValue) {
-        Optional<Double> measurement = StreamSupport.stream(actual.measure()
-                .spliterator(), false)
+        Optional<Double> measurement = StreamSupport.stream(actual.measure().spliterator(), false)
             .filter(m -> m.getStatistic() == statistic)
             .findAny()
             .map(Measurement::getValue);
@@ -87,22 +83,18 @@ public class MeterAssert<METER extends Meter> extends AbstractAssert<MeterAssert
     /**
      * Verifies that the meter has the expected type.
      * <p>
-     * Example:
-     * <pre><code class='java'>
+     * Example: <pre><code class='java'>
      * DistributionSummary summary = DistributionSummary.builder("response.size")
      *     .register(registry);
      *
      * assertThat(summary).hasType(Meter.Type.DISTRIBUTION_SUMMARY);
      * </code></pre>
-     *
      * @param expectedType the expected meter type
      * @return this assertion object for chaining
      */
     public MeterAssert<?> hasType(Meter.Type expectedType) {
-        Meter.Type actualType = actual().getId()
-            .getType();
-        Assertions.assertThat(actualType)
-            .isEqualTo(expectedType);
+        Meter.Type actualType = actual().getId().getType();
+        Assertions.assertThat(actualType).isEqualTo(expectedType);
         return this;
     }
 
