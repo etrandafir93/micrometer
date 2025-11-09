@@ -2,13 +2,12 @@ package io.micrometer.common.util.assertions;
 
 import io.micrometer.core.instrument.Measurement;
 import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.Statistic;
 import io.micrometer.core.instrument.Tag;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ListAssert;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 /**
@@ -52,25 +51,37 @@ public class MeterAssert<METER extends Meter> extends AbstractAssert<MeterAssert
     }
 
     /**
-     * Returns AssertJ's {@link ListAssert} for the meter's measurements.
+     * Verifies that the meter has a measurement with the given statistic and expected value.
      * <p>
      * Example:
      * <pre><code class='java'>
-     * Meter meter = registry.counter("my.counter");
+     * DistributionSummary summary = DistributionSummary.builder("response.size")
+     *     .register(registry);
+     * summary.record(100.0);
+     * summary.record(200.0);
      *
-     * assertThat(meter).measures()
-     *     .isNotEmpty()
-     *     .hasSize(1);
+     * assertThat(summary)
+     *     .hasMeasure(Statistic.COUNT, 2.0)
+     *     .hasMeasure(Statistic.TOTAL, 300.0)
+     *     .hasMeasure(Statistic.MAX, 200.0);
      * </code></pre>
-     *
-     * @return a {@link ListAssert} of measurement values for further assertions
+     * @param statistic the statistic type to check for
+     * @param expectedValue the expected value for the statistic
+     * @return this assertion object for chaining
+     * @see #hasType(Meter.Type)
      */
-    public ListAssert<Double> measures() {
-        List<Double> measures = StreamSupport.stream(actual.measure()
+    public MeterAssert<METER> hasMeasurement(Statistic statistic, double expectedValue) {
+        Optional<Double> measurement = StreamSupport.stream(actual.measure()
                 .spliterator(), false)
-            .map(Measurement::getValue)
-            .collect(Collectors.toList());
-        return ListAssert.assertThatList(measures);
+            .filter(m -> m.getStatistic() == statistic)
+            .findAny()
+            .map(Measurement::getValue);
+
+        Assertions.assertThat(measurement)
+            .as("Meter %s should have a measurement for statistic %s with value %s", actual, statistic, expectedValue)
+            .isPresent()
+            .hasValue(expectedValue);
+        return this;
     }
 
     /**
@@ -78,9 +89,10 @@ public class MeterAssert<METER extends Meter> extends AbstractAssert<MeterAssert
      * <p>
      * Example:
      * <pre><code class='java'>
-     * Meter meter = registry.counter("my.counter");
+     * DistributionSummary summary = DistributionSummary.builder("response.size")
+     *     .register(registry);
      *
-     * assertThat(meter).hasType(Meter.Type.COUNTER);
+     * assertThat(summary).hasType(Meter.Type.DISTRIBUTION_SUMMARY);
      * </code></pre>
      *
      * @param expectedType the expected meter type

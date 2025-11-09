@@ -412,10 +412,26 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
         return stringBuilder.toString();
     }
 
+    /**
+     * Finds a meter by name and tags and returns a {@link MeterAssert} for further assertions.
+     *
+     * @param meterName name of the meter
+     * @param tags tags to match
+     * @return a {@link MeterAssert} for the found meter
+     * @throws AssertionError if the meter is not found
+     */
     public MeterAssert<?> meter(String meterName, Tag... tags) {
         return this.meter(meterName, Arrays.asList(tags));
     }
 
+    /**
+     * Finds a meter by name and tags and returns a {@link MeterAssert} for further assertions.
+     *
+     * @param meterName name of the meter
+     * @param tags tags to match
+     * @return a {@link MeterAssert} for the found meter
+     * @throws AssertionError if the meter is not found
+     */
     public MeterAssert<?> meter(String meterName, Iterable<Tag> tags) {
         hasMeterWithName(meterName);
         Meter meter = actual.find(meterName)
@@ -427,6 +443,26 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
             .isNotNull();
     }
 
+    /**
+     * Finds a counter by name and tags and returns a {@link CounterAssert} for further assertions.
+     * <p>
+     * Example:
+     * <pre><code class='java'>
+     * Counter.builder("my.counter")
+     *     .tag("env", "prod")
+     *     .register(registry);
+     *
+     * MeterRegistryAssert.assertThat(registry)
+     *     .counter("my.counter", Tag.of("env", "prod"))
+     *     .hasCount(0);
+     * </code></pre>
+     *
+     * @param name name of the counter
+     * @param tags tags to match
+     * @return a {@link CounterAssert} for the found counter
+     * @throws AssertionError if the counter is not found
+     * @see CounterAssert
+     */
     public CounterAssert counter(String name, Tag... tags) {
         MeterAssert<?> meter = meter(name, tags).hasType(Meter.Type.COUNTER);
 
@@ -435,6 +471,28 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
             .isNotNull();
     }
 
+    /**
+     * Finds a timer by name and tags and returns a {@link TimerAssert} for further assertions.
+     * <p>
+     * Example:
+     * <pre><code class='java'>
+     * Timer.builder("my.timer")
+     *     .tag("env", "prod")
+     *     .register(registry);
+     *
+     * MeterRegistryAssert.assertThat(registry)
+     *     .timer("my.timer", Tag.of("env", "prod"))
+     *     .hasCount(0)
+     *     .totalTime()
+     *     .isEqualTo(Duration.ZERO);
+     * </code></pre>
+     *
+     * @param name name of the timer
+     * @param tags tags to match
+     * @return a {@link TimerAssert} for the found timer
+     * @throws AssertionError if the timer is not found
+     * @see TimerAssert
+     */
     public TimerAssert timer(String name, Tag... tags) {
         MeterAssert<?> meter = meter(name, tags).hasType(Meter.Type.TIMER);
 
@@ -443,6 +501,26 @@ public class MeterRegistryAssert extends AbstractAssert<MeterRegistryAssert, Met
             .isNotNull();
     }
 
+    /**
+     * Finds a gauge by name and tags and returns a {@link GaugeAssert} for further assertions.
+     * <p>
+     * Example:
+     * <pre><code class='java'>
+     * Gauge.builder("my.gauge", () -> 42.0)
+     *     .tag("env", "prod")
+     *     .register(registry);
+     *
+     * MeterRegistryAssert.assertThat(registry)
+     *     .gauge("my.gauge", Tag.of("env", "prod"))
+     *     .hasValue(42.0);
+     * </code></pre>
+     *
+     * @param name name of the gauge
+     * @param tags tags to match
+     * @return a {@link GaugeAssert} for the found gauge
+     * @throws AssertionError if the gauge is not found
+     * @see GaugeAssert
+     */
     public GaugeAssert gauge(String name, Tag... tags) {
         MeterAssert<?> meter = meter(name, tags).hasType(Meter.Type.GAUGE);
 
