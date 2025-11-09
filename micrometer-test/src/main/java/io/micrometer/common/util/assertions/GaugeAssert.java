@@ -1,23 +1,70 @@
 package io.micrometer.common.util.assertions;
 
 import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.Tag;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.DoubleAssert;
 
+/**
+ * Assertion methods for {@link Gauge}s.
+ * <p>
+ * To create a new instance of this class, invoke
+ * {@link GaugeAssert#assertThat(Gauge)} or use
+ * {@link io.micrometer.core.tck.MeterRegistryAssert#gauge(String, Tag...)}.
+ *
+ * @author Emanuel Trandafir
+ */
 public class GaugeAssert extends AbstractAssert<GaugeAssert, Gauge> {
 
+    /**
+     * Creates a new instance of {@link GaugeAssert}.
+     * @param actual the gauge to assert on
+     * @return the created assertion object
+     */
     public static GaugeAssert assertThat(Gauge actual) {
         return new GaugeAssert(actual);
     }
 
+    /**
+     * Creates a new instance of {@link GaugeAssert}.
+     * @param actual the gauge to assert on
+     */
     public GaugeAssert(Gauge actual) {
         super(actual, GaugeAssert.class);
     }
 
-    public DoubleAssert hasValue(double expected) {
-        return value().isEqualTo(expected);
+    /**
+     * Verifies that the gauge's value is equal to the expected value.
+     * <p>
+     * Example:
+     * <pre><code class='java'>
+     * Gauge gauge = Gauge.builder("my.gauge", () -> 42.0).register(registry);
+     *
+     * assertThat(gauge).hasValue(42.0);
+     * </code></pre>
+     * @param expected the expected value
+     * @return this assertion object for chaining
+     * @see #value()
+     */
+    public GaugeAssert hasValue(double expected) {
+        value().isEqualTo(expected);
+        return this;
     }
 
+    /**
+     * Returns AssertJ's {@link DoubleAssert} for the gauge's current value.
+     * <p>
+     * Example:
+     * <pre><code class='java'>
+     * Gauge gauge = Gauge.builder("my.gauge", () -> 42.5).register(registry);
+     *
+     * assertThat(gauge).value()
+     *     .isBetween(40.0, 50.0)
+     *     .isCloseTo(42.0, within(1.0));
+     * </code></pre>
+     * @return a {@link DoubleAssert} for further assertions
+     * @see #hasValue(double)
+     */
     public DoubleAssert value() {
         return new DoubleAssert(actual.value());
     }
